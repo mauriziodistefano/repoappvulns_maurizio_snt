@@ -1,0 +1,32 @@
+Fortify Remediation Aviator - SAST audit and remediation
+
+A - Cada usuario que quiera usar aviator tiene que 
+	A1) crear una clave privada/publica (paso 2 abajo) y enviarnos la llave publica para registrar el usuario como administrador del tenant de aviator
+	A2) enviarnos el email del usuario
+
+aviator_server_url: https://eu.aviator.fortify.com
+tenant_name: santander_pov
+user_email_id: to be provided
+
+Documentación: https://www.microfocus.com/documentation/fortify-static-code-analyzer-and-tools/2640/sast-aviator-ugd-html-26.4.0/ad7e084df065_getting_started.html
+
+	1 - Download fcli
+		https://github.com/fortify/fcli/releases
+
+	2 - Register customer administrator (only the first time)
+		openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out private_key.pem
+		openssl rsa -in private_key.pem -pubout -out public_key.pem
+
+	3 - Create an administrator configuration for interacting with Fortify Remediation Aviator
+		fcli aviator admin-config create --url <aviator_server_url> --tenant <tenant_name> --private-key <path_to_private_key.pem>
+	
+	4 - Generate tokens for individual users
+		fcli aviator token create --email <user_email_id> --save-token <output_file>
+				
+	5 - Create application
+		fcli aviator app create <aviator_application_name>
+		
+	6 - Trigger SAST Audit		
+		fcli ssc session login --url <ssc_server_url> 
+		fcli aviator session login --url <aviator_server_url> --token <access_token>
+		fcli aviator ssc audit-sast --av <application_version_name:id> --app <aviator_application_name>

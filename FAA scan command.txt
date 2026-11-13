@@ -1,0 +1,6 @@
+1 - run scan
+	fortifyaa -scan /path/to/project
+	
+2 - upload results to SSC
+	fcli ssc session login --url <ssc_server_url> 
+	fcli ssc artifact upload -f faa.sarif --engine-type FORTIFY_AA --appversion <application_version_name:id>
