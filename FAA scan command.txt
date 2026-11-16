@@ -1,5 +1,5 @@
-1 - run scan
-	fortifyaa -scan /path/to/project
+1 - run a complementary FAA scan based on existing Fortify SAST results
+	fortifyaa -scan /path/to/project --ssc-appversion <application_version_name:id>
 	
 2 - upload results to SSC
 	fcli ssc session login --url <ssc_server_url> 
